@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { EnigmaSecurityModel, Enigma } from "./EnigmaSecurityModel";
+import { EnigmaSecurityModel, Enigma } from "./Enigma";
 
 describe("Enigma", () => {
   [

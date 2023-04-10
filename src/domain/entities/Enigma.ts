@@ -1,15 +1,11 @@
-import { Caesar } from "../entities/Caesar";
-import { Rotor } from "../entities/Rotor";
+import { Caesar } from "./algorithms/Caesar";
+import { Rotor } from "./algorithms/Rotor";
 
 export interface EnigmaSecurityModel {
   readonly caesarShift: number;
   readonly rotor1Value: string;
   readonly rotor2Value: string;
   readonly rotor3Value: string;
-}
-
-export interface EnigmaSecurityModelFull extends EnigmaSecurityModel {
-  readonly name: string;
 }
 
 export class Enigma {
