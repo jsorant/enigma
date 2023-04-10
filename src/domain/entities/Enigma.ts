@@ -10,27 +10,40 @@ export interface EnigmaSecurityModel {
 
 export class Enigma {
   private readonly securityModel: EnigmaSecurityModel;
+  private encryptedMessage: string;
 
-  constructor(parameters: EnigmaSecurityModel) {
+  constructor(message: string, parameters: EnigmaSecurityModel) {
     this.securityModel = parameters;
+    this.encryptedMessage = message;
   }
 
-  encrypt(message: string): string {
-    let result: string;
-    result = this.applyCaesar(message, this.securityModel.caesarShift);
-    result = this.applyRotor(result, this.securityModel.rotor1Value);
-    result = this.applyRotor(result, this.securityModel.rotor2Value);
-    result = this.applyRotor(result, this.securityModel.rotor3Value);
-    return result;
+  encrypt(): string {
+    this.applyCaesar();
+    this.applyRotor1();
+    this.applyRotor2();
+    this.applyRotor3();
+    return this.encryptedMessage;
   }
 
-  private applyCaesar(message: string, caesarShift: number) {
-    const caesar = new Caesar(caesarShift);
-    return caesar.encrypt(message);
+  private applyCaesar() {
+    const caesar = new Caesar(this.securityModel.caesarShift);
+    this.encryptedMessage = caesar.encrypt(this.encryptedMessage);
   }
 
-  private applyRotor(message: string, rotorValue: string) {
+  private applyRotor1() {
+    this.applyRotor(this.securityModel.rotor1Value);
+  }
+
+  private applyRotor2() {
+    this.applyRotor(this.securityModel.rotor2Value);
+  }
+
+  private applyRotor3() {
+    this.applyRotor(this.securityModel.rotor3Value);
+  }
+
+  private applyRotor(rotorValue: string) {
     const rotor = new Rotor(rotorValue);
-    return rotor.encrypt(message);
+    this.encryptedMessage = rotor.encrypt(this.encryptedMessage);
   }
 }

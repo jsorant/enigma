@@ -47,8 +47,8 @@ describe("Enigma", () => {
         rotor2Value: testCase.rotor2Value,
         rotor3Value: testCase.rotor3Value,
       };
-      const enigma = new Enigma(parameters);
-      const encryptedMessage = enigma.encrypt(testCase.message);
+      const enigma = new Enigma(testCase.message, parameters);
+      const encryptedMessage = enigma.encrypt();
       expect(encryptedMessage).to.equal(testCase.expectedOutput);
     });
   });

@@ -16,7 +16,7 @@ export class EncryptWithEnigma {
     if (model === undefined) {
       throw new SecurityModelNotFound(modelName);
     }
-    const enigma = new Enigma(model);
-    return enigma.encrypt(message);
+    const enigma = new Enigma(message, model);
+    return enigma.encrypt();
   }
 }
