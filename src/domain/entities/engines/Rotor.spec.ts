@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Rotor } from "./Rotor";
+import { RotorEngine } from "./Rotor";
 
 describe("Rotor", () => {
   [
@@ -25,7 +25,7 @@ describe("Rotor", () => {
     },
   ].forEach((testCase) => {
     it(`should return ${testCase.expectedOutput} with rotor value = ${testCase.rotorValue} and message = ${testCase.message}`, () => {
-      const rotor = new Rotor(testCase.rotorValue);
+      const rotor = new RotorEngine(testCase.rotorValue);
       const encryptedMessage = rotor.encrypt(testCase.message);
       expect(encryptedMessage).to.equal(testCase.expectedOutput);
     });

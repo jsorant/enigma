@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Caesar } from "./Caesar";
+import { CaesarEngine } from "./Caesar";
 
 describe("Caesar", () => {
   [
@@ -22,7 +22,7 @@ describe("Caesar", () => {
     { shift: 0, increment: 26, message: "AAA", expectedOutput: "AAA" },
   ].forEach((testCase) => {
     it(`should return ${testCase.expectedOutput} with shift = ${testCase.shift}, increment = ${testCase.increment} and message = ${testCase.message}`, () => {
-      const caesar = new Caesar(testCase.shift, testCase.increment);
+      const caesar = new CaesarEngine(testCase.shift, testCase.increment);
       const encryptedMessage = caesar.encrypt(testCase.message);
       expect(encryptedMessage).to.equal(testCase.expectedOutput);
     });

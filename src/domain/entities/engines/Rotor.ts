@@ -1,4 +1,7 @@
-export class Rotor {
+import { Engine } from "../Engine";
+
+export class RotorEngine implements Engine {
+  public static readonly ENGINE_NAME = "rotor";
   private readonly alphabet: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   private readonly rotorValue: string;
 

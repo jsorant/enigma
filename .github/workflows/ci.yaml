@@ -1,4 +1,4 @@
-name: enigma-ci
+name: encryptor-ci
 on: [push, pull_request]
 jobs:
   integration-tests:

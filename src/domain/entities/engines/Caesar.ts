@@ -1,4 +1,7 @@
-export class Caesar {
+import { Engine } from "../Engine";
+
+export class CaesarEngine implements Engine {
+  public static readonly ENGINE_NAME = "caesar";
   private readonly asciiCharCodeOfA: number = "A".charCodeAt(0);
   private readonly asciiCharCodeOfZ: number = "Z".charCodeAt(0);
   private currentShift: number;
@@ -9,12 +12,12 @@ export class Caesar {
     this.increment = increment;
   }
 
-  encrypt(input: string): string {
-    return input
+  encrypt(message: string): string {
+    return message
       .split("")
-      .map((element) => element.charCodeAt(0))
-      .map((element) => this.shift(element))
-      .map((element) => String.fromCharCode(element))
+      .map((character) => character.charCodeAt(0))
+      .map((asciiCharCode) => this.shift(asciiCharCode))
+      .map((asciiCharCode) => String.fromCharCode(asciiCharCode))
       .join("");
   }
 
