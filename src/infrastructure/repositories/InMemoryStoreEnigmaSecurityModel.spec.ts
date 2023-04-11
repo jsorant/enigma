@@ -9,6 +9,7 @@ describe("InMemoryStoreEnigmaSecurityModel", () => {
   const model1Name = "enigma-1";
   const model1: EnigmaSecurityModel = {
     caesarShift: 4,
+    caesarIncrement: 1,
     rotor1Value: "BDFHJLCPRTXVZNYEIWGAKMUSQO",
     rotor2Value: "AJDKSIRUXBLHWTMCQGZNPYFVOE",
     rotor3Value: "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
@@ -17,6 +18,7 @@ describe("InMemoryStoreEnigmaSecurityModel", () => {
   const model2Name = "enigma-2";
   const model2: EnigmaSecurityModel = {
     caesarShift: 3,
+    caesarIncrement: 2,
     rotor1Value: "AJDKSIRUXBLHWTMCQGZNPYFVOE",
     rotor2Value: "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
     rotor3Value: "BDFHJLCPRTXVZNYEIWGAKMUSQO",

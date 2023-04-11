@@ -2,10 +2,11 @@ export class Caesar {
   private readonly asciiCharCodeOfA: number = "A".charCodeAt(0);
   private readonly asciiCharCodeOfZ: number = "Z".charCodeAt(0);
   private currentShift: number;
-  private readonly increment: number = 1;
+  private readonly increment: number;
 
-  constructor(shift: number) {
+  constructor(shift: number, increment: number) {
     this.currentShift = shift;
+    this.increment = increment;
   }
 
   encrypt(input: string): string {

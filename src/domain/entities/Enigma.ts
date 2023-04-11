@@ -3,6 +3,7 @@ import { Rotor } from "./algorithms/Rotor";
 
 export interface EnigmaSecurityModel {
   readonly caesarShift: number;
+  readonly caesarIncrement: number;
   readonly rotor1Value: string;
   readonly rotor2Value: string;
   readonly rotor3Value: string;
@@ -26,7 +27,10 @@ export class Enigma {
   }
 
   private applyCaesar() {
-    const caesar = new Caesar(this.securityModel.caesarShift);
+    const caesar = new Caesar(
+      this.securityModel.caesarShift,
+      this.securityModel.caesarIncrement
+    );
     this.encryptedMessage = caesar.encrypt(this.encryptedMessage);
   }
 

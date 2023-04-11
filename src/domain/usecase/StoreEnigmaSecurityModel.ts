@@ -4,6 +4,7 @@ import { EnigmaSecurityModelRepository } from "../ports/EnigmaSecurityModelRepos
 export interface StoreEnigmaSecurityModelInput {
   name: string;
   caesarShift: number;
+  caesarIncrement: number;
   rotor1Value: string;
   rotor2Value: string;
   rotor3Value: string;
@@ -19,6 +20,7 @@ export class StoreEnigmaSecurityModel {
   async execute(input: StoreEnigmaSecurityModelInput): Promise<void> {
     const model: EnigmaSecurityModel = {
       caesarShift: input.caesarShift,
+      caesarIncrement: input.caesarIncrement,
       rotor1Value: input.rotor1Value,
       rotor2Value: input.rotor2Value,
       rotor3Value: input.rotor3Value,

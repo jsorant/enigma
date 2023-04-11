@@ -13,6 +13,7 @@ describe("StoreEnigmaSecurityModel", () => {
   const input: StoreEnigmaSecurityModelInput = {
     name: "enigma-1",
     caesarShift: 4,
+    caesarIncrement: 1,
     rotor1Value: "ROTOR1",
     rotor2Value: "ROTOR2",
     rotor3Value: "ROTOR3",

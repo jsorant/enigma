@@ -11,8 +11,9 @@ chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
 describe("EncryptWithEnigma", () => {
-  const model1: EnigmaSecurityModel = {
+  const model: EnigmaSecurityModel = {
     caesarShift: 4,
+    caesarIncrement: 1,
     rotor1Value: "BDFHJLCPRTXVZNYEIWGAKMUSQO",
     rotor2Value: "AJDKSIRUXBLHWTMCQGZNPYFVOE",
     rotor3Value: "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
@@ -20,7 +21,7 @@ describe("EncryptWithEnigma", () => {
 
   it(`should encrypt using an enigma security model`, async () => {
     const stubRepository = stubInterface<EnigmaSecurityModelRepository>();
-    stubRepository.get.resolves(model1);
+    stubRepository.get.resolves(model);
     const usecase = new EncryptWithEnigma(stubRepository);
     const encryptedMessage = await usecase.execute("enigma-1", "AAA");
     expect(stubRepository.get).to.have.been.calledOnceWith("enigma-1");
