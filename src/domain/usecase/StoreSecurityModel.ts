@@ -43,7 +43,7 @@ export class StoreSecurityModel {
     } else if (engine.name === RotorEngine.ENGINE_NAME) {
       return new RotorEngine(engine.rotor);
     } else {
-      throw new Error("Unexpected error"); // TODO
+      throw new Error("Unexpected error");
     }
   }
 }
