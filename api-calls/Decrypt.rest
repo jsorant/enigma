@@ -1,0 +1,45 @@
+POST http://localhost:3000/decrypt HTTP/1.1
+content-type: application/json
+
+{
+   "security_model_name":"enigma-1",
+   "encrypted_message":"KQF"
+}
+
+# expected output : AAA
+
+###
+
+POST http://localhost:3000/decrypt HTTP/1.1
+content-type: application/json
+
+{
+   "security_model_name":"enigma-2",
+   "encrypted_message":"PQSACVVTOISXFXCIAMQEM"
+}
+
+# expected output : EVERYONEISWELCOMEHERE
+
+###
+
+POST http://localhost:3000/decrypt HTTP/1.1
+content-type: application/json
+
+{
+   "security_model_name":"enigma-3",
+   "encrypted_message":"MKDWDLTEUPWZBXMTWUUROXHBZBYJDAMZRUWXJZAACQ"
+}
+
+# expected output : EVERYONEISWELCOMEHEREEVERYONEISWELCOMEHERE 
+
+###
+
+POST http://localhost:3000/decrypt HTTP/1.1
+content-type: application/json
+
+{
+   "security_model_name":"custom",
+   "encrypted_message":"DIBNGAMLWH"
+}
+
+# expected output : HELLOWORLD 

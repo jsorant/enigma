@@ -33,3 +33,8 @@ Run tests using command:
 ```
 npm run test:bdd
 ```
+
+TODO :
+
+- Clean web server
+- rework readme

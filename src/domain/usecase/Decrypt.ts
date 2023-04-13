@@ -4,23 +4,23 @@ import { SecurityModel } from "../entities/SecurityModel";
 import { Engine } from "../entities/Engine";
 import { UseCase } from "./UseCase";
 
-export interface EncryptInput {
+export interface DecryptInput {
   modelName: string;
-  message: string;
-}
-
-export interface EncryptResult {
   encryptedMessage: string;
 }
 
-export class Encrypt implements UseCase<EncryptInput, EncryptResult> {
+export interface DecryptResult {
+  decryptedMessage: string;
+}
+
+export class Decrypt implements UseCase<DecryptInput, DecryptResult> {
   private readonly repository: SecurityModelRepository;
 
   constructor(repository: SecurityModelRepository) {
     this.repository = repository;
   }
 
-  async execute(input: EncryptInput): Promise<EncryptResult> {
+  async execute(input: DecryptInput): Promise<DecryptResult> {
     const model: SecurityModel | undefined = await this.repository.getByName(
       input.modelName
     );
@@ -28,10 +28,14 @@ export class Encrypt implements UseCase<EncryptInput, EncryptResult> {
       throw new SecurityModelNotFound(input.modelName);
     }
 
-    let encryptedMessage: string = input.message;
-    model.engines.forEach((engine: Engine) => {
-      encryptedMessage = engine.encrypt(encryptedMessage);
+    let decryptedMessage: string = input.encryptedMessage;
+    this.reverseEnginesOrder(model.engines).forEach((engine: Engine) => {
+      decryptedMessage = engine.decrypt(decryptedMessage);
     });
-    return { encryptedMessage };
+    return { decryptedMessage };
+  }
+
+  private reverseEnginesOrder(engines: Array<Engine>): Array<Engine> {
+    return engines.slice().reverse();
   }
 }

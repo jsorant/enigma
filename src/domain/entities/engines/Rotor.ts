@@ -10,19 +10,71 @@ export class RotorEngine implements Engine {
   }
 
   encrypt(message: string): string {
+    return this.translateEveryCharactersFromAlphabetToRotorValue(message);
+  }
+
+  decrypt(encryptedMessage: string): string {
+    return this.translateEveryCharactersFromRotorValueToAlphabet(
+      encryptedMessage
+    );
+  }
+
+  private translateEveryCharactersFromAlphabetToRotorValue(
+    message: string
+  ): string {
     return message
       .split("")
       .map((characterFromMessage) =>
-        this.applyRotorOnCharacter(characterFromMessage)
+        this.translateCharacterFromAlphabetToRotorValue(characterFromMessage)
       )
       .join("");
   }
 
-  private applyRotorOnCharacter(character: string) {
-    const alphabetIndex = this.alphabet
+  private translateEveryCharactersFromRotorValueToAlphabet(
+    encryptedMessage: string
+  ): string {
+    return encryptedMessage
       .split("")
-      .findIndex((element) => element === character);
+      .map((characterFromMessage) =>
+        this.translateCharacterFromRotorValueToAlphabet(characterFromMessage)
+      )
+      .join("");
+  }
 
-    return this.rotorValue.charAt(alphabetIndex);
+  private translateCharacterFromRotorValueToAlphabet(
+    characterFromMessage: string
+  ): string {
+    return this.translateCharacter(
+      characterFromMessage,
+      this.rotorValue,
+      this.alphabet
+    );
+  }
+
+  private translateCharacterFromAlphabetToRotorValue(
+    characterFromMessage: string
+  ): string {
+    return this.translateCharacter(
+      characterFromMessage,
+      this.alphabet,
+      this.rotorValue
+    );
+  }
+
+  private translateCharacter(
+    character: string,
+    sourceString: string,
+    destinationString: string
+  ) {
+    const indexInSourceString = this.findIndexOfCharacter(
+      character,
+      sourceString
+    );
+    const translatedCharacter = destinationString.charAt(indexInSourceString);
+    return translatedCharacter;
+  }
+
+  private findIndexOfCharacter(character: string, sourceString: string) {
+    return sourceString.split("").findIndex((element) => element === character);
   }
 }

@@ -21,10 +21,29 @@ export class CaesarEngine implements Engine {
       .join("");
   }
 
+  decrypt(encryptedMessage: string): string {
+    return encryptedMessage
+      .split("")
+      .map((character) => character.charCodeAt(0))
+      .map((asciiCharCode) => this.reverseShift(asciiCharCode))
+      .map((asciiCharCode) => String.fromCharCode(asciiCharCode))
+      .join("");
+  }
+
   private shift(asciiCharCode: number): number {
     const shiftedAsciiCharCode = asciiCharCode + this.currentShift;
-    this.currentShift = this.currentShift + this.increment;
+    this.updateShiftWithIncrement();
     return this.cycleAsciiCodeIntoAToZRangeIfNeeded(shiftedAsciiCharCode);
+  }
+
+  private reverseShift(asciiCharCode: number): number {
+    const shiftedAsciiCharCode = asciiCharCode - this.currentShift;
+    this.updateShiftWithIncrement();
+    return this.cycleAsciiCodeIntoAToZRangeIfNeeded(shiftedAsciiCharCode);
+  }
+
+  private updateShiftWithIncrement() {
+    this.currentShift = (this.currentShift + this.increment) % 26;
   }
 
   private cycleAsciiCodeIntoAToZRangeIfNeeded(asciiCharCode: number): number {

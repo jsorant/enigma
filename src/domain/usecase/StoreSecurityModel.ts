@@ -3,6 +3,7 @@ import { SecurityModel } from "../entities/SecurityModel";
 import { CaesarEngine } from "../entities/engines/Caesar";
 import { RotorEngine } from "../entities/engines/Rotor";
 import { Engine } from "../entities/Engine";
+import { UseCase } from "./UseCase";
 
 interface CaesarEngineDTO {
   name: "caesar";
@@ -22,7 +23,9 @@ export interface StoreSecurityModelInput {
   engines: Array<EngineDTO>;
 }
 
-export class StoreSecurityModel {
+export class StoreSecurityModel
+  implements UseCase<StoreSecurityModelInput, void>
+{
   private readonly repository: SecurityModelRepository;
 
   constructor(repository: SecurityModelRepository) {

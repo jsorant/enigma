@@ -1,0 +1,112 @@
+POST http://localhost:3000/security-model HTTP/1.1
+content-type: application/json
+
+{
+   "name":"enigma-1",
+   "engines":[
+      {
+         "name":"caesar",
+         "shift":4,
+         "increment":1
+      },
+      {
+         "name":"rotor",
+         "rotor":"BDFHJLCPRTXVZNYEIWGAKMUSQO"
+      },
+      {
+         "name":"rotor",
+         "rotor":"AJDKSIRUXBLHWTMCQGZNPYFVOE"
+      },
+      {
+         "name":"rotor",
+         "rotor":"EKMFLGDQVZNTOWYHXUSPAIBRCJ"
+      }
+   ]
+}
+
+###
+
+POST http://localhost:3000/security-model HTTP/1.1
+content-type: application/json
+
+{
+   "name":"enigma-2",
+   "engines":[
+      {
+         "name":"caesar",
+         "shift":9,
+         "increment":1
+      },
+      {
+         "name":"rotor",
+         "rotor":"BDFHJLCPRTXVZNYEIWGAKMUSQO"
+      },
+      {
+         "name":"rotor",
+         "rotor":"AJDKSIRUXBLHWTMCQGZNPYFVOE"
+      },
+      {
+         "name":"rotor",
+         "rotor":"EKMFLGDQVZNTOWYHXUSPAIBRCJ"
+      }
+   ]
+}
+
+
+###
+
+POST http://localhost:3000/security-model HTTP/1.1
+content-type: application/json
+
+{
+   "name":"enigma-3",
+   "engines":[
+      {
+         "name":"caesar",
+         "shift":9,
+         "increment":3
+      },
+      {
+         "name":"rotor",
+         "rotor":"BDFHTXVZNYEIWGAKMUSQOJLCPR"
+      },
+      {
+         "name":"rotor",
+         "rotor":"AJDKSIRUXBGZNPYFVOELHWTMCQ"
+      },
+      {
+         "name":"rotor",
+         "rotor":"TOWYHXUSPAIBRCJEKMFLGDQVZN"
+      }
+   ]
+}
+
+
+###
+
+POST http://localhost:3000/security-model HTTP/1.1
+content-type: application/json
+
+{
+   "name":"custom",
+   "engines":[
+      {
+         "name":"rotor",
+         "rotor":"NYEUSQOJXVZLCPBIWGAKMDFHRT"
+      },
+      {
+         "name":"caesar",
+         "shift":3,
+         "increment":1
+      },
+      {
+         "name":"rotor",
+         "rotor":"NYEUSQOJXVZLCPBIWGAKMDFHRT"
+      },
+      {
+         "name":"caesar",
+         "shift":1,
+         "increment":2
+      }
+   ]
+}
