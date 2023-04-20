@@ -13,50 +13,73 @@ export class CaesarEngine implements Engine {
   }
 
   encrypt(message: string): string {
-    return message
-      .split("")
-      .map((character) => character.charCodeAt(0))
-      .map((asciiCharCode) => this.shift(asciiCharCode))
-      .map((asciiCharCode) => String.fromCharCode(asciiCharCode))
-      .join("");
+    return this.applyAsciiCharCodeConvertFunctionToEachCharacterOf(
+      message,
+      this.shiftAsciiCharCode
+    );
   }
 
   decrypt(encryptedMessage: string): string {
-    return encryptedMessage
+    return this.applyAsciiCharCodeConvertFunctionToEachCharacterOf(
+      encryptedMessage,
+      this.reverseShiftAsciiCharCode
+    );
+  }
+
+  private applyAsciiCharCodeConvertFunctionToEachCharacterOf(
+    aString: string,
+    asciiCharCodeConvertFunction: (asciiCharCode: number) => number
+  ): string {
+    return aString
       .split("")
-      .map((character) => character.charCodeAt(0))
-      .map((asciiCharCode) => this.reverseShift(asciiCharCode))
-      .map((asciiCharCode) => String.fromCharCode(asciiCharCode))
+      .map(this.convertFirstCharacterOfStringToAsciiCharCode)
+      .map(asciiCharCodeConvertFunction, this)
+      .map(this.convertAsciiCharCodeToString)
       .join("");
   }
 
-  private shift(asciiCharCode: number): number {
-    const shiftedAsciiCharCode = asciiCharCode + this.currentShift;
-    this.updateShiftWithIncrement();
+  private convertFirstCharacterOfStringToAsciiCharCode(
+    character: string
+  ): number {
+    return character.charCodeAt(0);
+  }
+
+  private convertAsciiCharCodeToString(asciiCharCode: number): string {
+    return String.fromCharCode(asciiCharCode);
+  }
+
+  private shiftAsciiCharCode(asciiCharCode: number): number {
+    return this.shiftAsciiCharCodeWithValue(asciiCharCode, this.currentShift);
+  }
+
+  private reverseShiftAsciiCharCode(asciiCharCode: number): number {
+    return this.shiftAsciiCharCodeWithValue(asciiCharCode, -this.currentShift);
+  }
+
+  private shiftAsciiCharCodeWithValue(
+    asciiCharCode: number,
+    shiftValue: number
+  ): number {
+    const shiftedAsciiCharCode = asciiCharCode + shiftValue;
+    this.updateCurrentShiftWithIncrement();
     return this.cycleAsciiCodeIntoAToZRangeIfNeeded(shiftedAsciiCharCode);
   }
 
-  private reverseShift(asciiCharCode: number): number {
-    const shiftedAsciiCharCode = asciiCharCode - this.currentShift;
-    this.updateShiftWithIncrement();
-    return this.cycleAsciiCodeIntoAToZRangeIfNeeded(shiftedAsciiCharCode);
-  }
-
-  private updateShiftWithIncrement() {
+  private updateCurrentShiftWithIncrement() {
     this.currentShift = (this.currentShift + this.increment) % 26;
   }
 
   private cycleAsciiCodeIntoAToZRangeIfNeeded(asciiCharCode: number): number {
     if (asciiCharCode > this.asciiCharCodeOfZ) {
-      const newValue =
+      const asciiCharCodeInAZRange =
         ((asciiCharCode - this.asciiCharCodeOfA) % 26) + this.asciiCharCodeOfA;
-      return newValue;
+      return asciiCharCodeInAZRange;
     } else if (asciiCharCode < this.asciiCharCodeOfA) {
-      const newValue =
+      const asciiCharCodeInAZRange =
         ((asciiCharCode - this.asciiCharCodeOfA) % 26) +
         this.asciiCharCodeOfZ +
         1;
-      return newValue;
+      return asciiCharCodeInAZRange;
     } else {
       return asciiCharCode;
     }

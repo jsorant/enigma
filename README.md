@@ -1,4 +1,11 @@
-# Boilerplate to practice katas using Node and Typescript
+# Encryption backend service
+
+## Introduction
+
+The goal of this repository is to practice some concepts with a simple backend server.
+
+- Keywords: TDD, BDD, Clean Architecture, Clean Code
+- Tools: TypeScript, mocha/chai/sinon, cucumber, nyc, supertest, REST client
 
 ## Setup project
 
@@ -26,15 +33,32 @@ npm run test:coverage
 
 ## Run tests with BDD style (Cucumber)
 
-You can also use BDD style. Define features with `.feature` files in `/features` folder, then implement steps in `/features/support` folder.
+BDD features are located in `/features` folder.
 
-Run tests using command:
+### Using a terminal
 
 ```
 npm run test:bdd
 ```
 
-TODO :
+### Code coverage
 
-- Clean web server
-- rework readme
+```
+npm run test:bdd:coverage
+```
+
+## Run
+
+### Dev mode
+
+```
+npm run dev
+```
+
+## API calls
+
+Use VSCode `REST Client` extension to execute requests defined in `api-calls` folder.
+
+# TODO
+
+- Black box BDD tests with docker, docker-compose, testcontainers & axios

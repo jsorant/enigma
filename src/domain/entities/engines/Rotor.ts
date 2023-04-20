@@ -10,35 +10,24 @@ export class RotorEngine implements Engine {
   }
 
   encrypt(message: string): string {
-    return this.translateEveryCharactersFromAlphabetToRotorValue(message);
-  }
-
-  decrypt(encryptedMessage: string): string {
-    return this.translateEveryCharactersFromRotorValueToAlphabet(
-      encryptedMessage
+    return this.translateEveryCharactersOf(
+      message,
+      this.translateCharacterFromAlphabetToRotorValue
     );
   }
 
-  private translateEveryCharactersFromAlphabetToRotorValue(
-    message: string
-  ): string {
-    return message
-      .split("")
-      .map((characterFromMessage) =>
-        this.translateCharacterFromAlphabetToRotorValue(characterFromMessage)
-      )
-      .join("");
+  decrypt(encryptedMessage: string): string {
+    return this.translateEveryCharactersOf(
+      encryptedMessage,
+      this.translateCharacterFromRotorValueToAlphabet
+    );
   }
 
-  private translateEveryCharactersFromRotorValueToAlphabet(
-    encryptedMessage: string
+  private translateEveryCharactersOf(
+    message: string,
+    translateCharacterFunction: (aString: string) => string
   ): string {
-    return encryptedMessage
-      .split("")
-      .map((characterFromMessage) =>
-        this.translateCharacterFromRotorValueToAlphabet(characterFromMessage)
-      )
-      .join("");
+    return message.split("").map(translateCharacterFunction, this).join("");
   }
 
   private translateCharacterFromRotorValueToAlphabet(

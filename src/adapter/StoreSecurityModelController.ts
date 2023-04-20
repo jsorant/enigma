@@ -15,26 +15,36 @@ export class StoreSecurityModelController extends Controller<
   protected adaptInput(body: any): StoreSecurityModelInput {
     return {
       name: body.name,
-      engines: body.engines.map((element: any) => {
-        if (element.name === "caesar") {
-          return {
-            name: "caesar",
-            shift: element.shift,
-            increment: element.increment,
-          };
-        } else if (element.name === "rotor") {
-          return {
-            name: "rotor",
-            rotor: element.rotor,
-          };
-        } else {
-          throw new Error(`Unsupported engine: '${element.name}'`);
-        }
-      }),
+      engines: body.engines.map(this.adaptEngineOrThrow, this),
     };
   }
 
   protected adaptJsonResponseBody(usecaseResult: void): any {
     return {};
+  }
+
+  private adaptEngineOrThrow(engineFromBody: any) {
+    if (engineFromBody.name === "caesar") {
+      return this.adaptCaesarEngine(engineFromBody);
+    } else if (engineFromBody.name === "rotor") {
+      return this.adaptRotorEngine(engineFromBody);
+    } else {
+      throw new Error(`Unsupported engine: '${engineFromBody.name}'`);
+    }
+  }
+
+  private adaptCaesarEngine(element: any) {
+    return {
+      name: "caesar",
+      shift: element.shift,
+      increment: element.increment,
+    };
+  }
+
+  private adaptRotorEngine(element: any) {
+    return {
+      name: "rotor",
+      rotor: element.rotor,
+    };
   }
 }

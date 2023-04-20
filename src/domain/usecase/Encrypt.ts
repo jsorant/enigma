@@ -1,8 +1,8 @@
 import { SecurityModelRepository } from "../ports/SecurityModelRepository";
-import { SecurityModelNotFound } from "./errors/SecurityModelNotFound";
 import { SecurityModel } from "../entities/SecurityModel";
 import { Engine } from "../entities/Engine";
 import { UseCase } from "./UseCase";
+import { SecurityModelBasedUseCase } from "./SecurityModelBasedUseCase";
 
 export interface EncryptInput {
   modelName: string;
@@ -13,25 +13,27 @@ export interface EncryptResult {
   encryptedMessage: string;
 }
 
-export class Encrypt implements UseCase<EncryptInput, EncryptResult> {
-  private readonly repository: SecurityModelRepository;
-
+export class Encrypt
+  extends SecurityModelBasedUseCase
+  implements UseCase<EncryptInput, EncryptResult>
+{
   constructor(repository: SecurityModelRepository) {
-    this.repository = repository;
+    super(repository);
   }
 
   async execute(input: EncryptInput): Promise<EncryptResult> {
-    const model: SecurityModel | undefined = await this.repository.getByName(
+    const model: SecurityModel = await this.retrieveSecurityModelOrThrow(
       input.modelName
     );
-    if (model === undefined) {
-      throw new SecurityModelNotFound(input.modelName);
-    }
+    const encryptedMessage: string = this.encrypt(input.message, model);
+    return { encryptedMessage };
+  }
 
-    let encryptedMessage: string = input.message;
+  private encrypt(message: string, model: SecurityModel) {
+    let encryptedMessage: string = message;
     model.engines.forEach((engine: Engine) => {
       encryptedMessage = engine.encrypt(encryptedMessage);
     });
-    return { encryptedMessage };
+    return encryptedMessage;
   }
 }

@@ -33,14 +33,18 @@ export class StoreSecurityModel
   }
 
   async execute(input: StoreSecurityModelInput): Promise<void> {
-    const model: SecurityModel = {
-      name: input.name,
-      engines: input.engines.map(this.adaptEngine),
-    };
+    const model = this.makeSecurityModel(input);
     this.repository.save(model);
   }
 
-  private adaptEngine(engine: EngineDTO): Engine {
+  private makeSecurityModel(input: StoreSecurityModelInput): SecurityModel {
+    return {
+      name: input.name,
+      engines: input.engines.map(this.makeEngine),
+    };
+  }
+
+  private makeEngine(engine: EngineDTO): Engine {
     if (engine.name === CaesarEngine.ENGINE_NAME) {
       return new CaesarEngine(engine.shift, engine.increment);
     } else if (engine.name === RotorEngine.ENGINE_NAME) {
