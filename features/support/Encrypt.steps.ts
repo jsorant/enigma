@@ -25,10 +25,10 @@ Then(
 );
 
 async function callPostEncryptEndpoint(world: any, message: string) {
-  return await world.requestWithSupertest
-    .post("/encrypt")
-    .send(makePostEncryptBody(world, message))
-    .set("Accept", "application/json");
+  return await world.applicationWrapper.post(
+    "/encrypt",
+    makePostEncryptBody(world, message)
+  );
 }
 
 function makePostEncryptBody(world: any, message: string): any {

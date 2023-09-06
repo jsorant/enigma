@@ -69,8 +69,8 @@ function addRotorEngineToSecurityModel(world: any, rotor: string) {
 }
 
 async function callPostSecurityModelEndpoint(world: any): Promise<any> {
-  return await world.requestWithSupertest
-    .post("/security-model")
-    .send(world.securityModel)
-    .set("Accept", "application/json");
+  return await world.applicationWrapper.post(
+    "/security-model",
+    world.securityModel
+  );
 }

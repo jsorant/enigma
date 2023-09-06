@@ -25,10 +25,10 @@ Then(
 );
 
 async function callPostDecryptEndpoint(world: any, encryptedMessage: string) {
-  return await world.requestWithSupertest
-    .post("/decrypt")
-    .send(makePostDecryptBody(world, encryptedMessage))
-    .set("Accept", "application/json");
+  return await world.applicationWrapper.post(
+    "/decrypt",
+    makePostDecryptBody(world, encryptedMessage)
+  );
 }
 
 function makePostDecryptBody(world: any, encryptedMessage: string): any {
