@@ -35,10 +35,22 @@ npm run test:coverage
 
 BDD features are located in `/features` folder.
 
-### Using a terminal
+### Whitebox with Supertest
 
 ```
 npm run test:bdd
+```
+
+### Blackbox with Testcontainers and generic containers
+
+```
+npm run test:bdd:bb
+```
+
+### Blackbox with Testcontainers and docker-compose files
+
+```
+npm run test:bdd:bbdc
 ```
 
 ### Code coverage
@@ -58,7 +70,3 @@ npm run dev
 ## API calls
 
 Use VSCode `REST Client` extension to execute requests defined in `api-calls` folder.
-
-# TODO
-
-- Black box BDD tests with docker, docker-compose, testcontainers & axios
