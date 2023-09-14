@@ -12,6 +12,7 @@ export class SuperTestApplicationWrapper implements ApplicationWrapper {
   async start(): Promise<void> {
     // Nothing to do.
   }
+
   async stop(): Promise<void> {
     // Nothing to do.
   }
