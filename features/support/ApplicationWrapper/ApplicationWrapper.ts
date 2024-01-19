@@ -6,6 +6,6 @@ export interface ApplicationWrapper {
 
 export interface ApplicationResponse {
   status: number;
-  headers: Map<string, string>;
+  headers: { [index: string]: string }; //TODO
   body: any;
 }
