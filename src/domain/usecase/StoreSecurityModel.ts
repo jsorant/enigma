@@ -1,7 +1,7 @@
 import { SecurityModelRepository } from "../ports/SecurityModelRepository";
 import { SecurityModel } from "../entities/SecurityModel";
-import { CaesarEngine } from "../entities/engines/Caesar";
-import { RotorEngine } from "../entities/engines/Rotor";
+import { CaesarEngine } from "../entities/engines/caesar/CaesarEngine";
+import { RotorEngine } from "../entities/engines/rotor/RotorEngine";
 import { Engine } from "../entities/Engine";
 import { UseCase } from "./UseCase";
 
@@ -46,7 +46,10 @@ export class StoreSecurityModel
 
   private makeEngine(engine: EngineDTO): Engine {
     if (engine.name === CaesarEngine.ENGINE_NAME) {
-      return new CaesarEngine(engine.shift, engine.increment);
+      return CaesarEngine.builder()
+        .withShift(engine.shift)
+        .withIncrement(engine.increment)
+        .build();
     } else if (engine.name === RotorEngine.ENGINE_NAME) {
       return new RotorEngine(engine.rotor);
     } else {

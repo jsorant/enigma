@@ -1,12 +1,23 @@
-import { Engine } from "../Engine";
+import { Engine } from "../../Engine";
+import { RotorValue } from "./RotorValue";
+
+const ALPHABET: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+declare namespace RotorEngine {
+  type RotorEngineBuilder = typeof RotorEngine.RotorEngineBuilder.prototype;
+}
 
 export class RotorEngine implements Engine {
   public static readonly ENGINE_NAME = "rotor";
-  private readonly alphabet: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  private readonly rotorValue: string;
 
-  constructor(rotor: string) {
-    this.rotorValue = rotor;
+  private readonly rotorValue: RotorValue;
+
+  private constructor(builder: RotorEngine.RotorEngineBuilder) {
+    this.rotorValue = builder.rotorValue;
+  }
+
+  static builder(): RotorEngine.RotorEngineBuilder {
+    return new RotorEngine.RotorEngineBuilder();
   }
 
   encrypt(message: string): string {
@@ -35,8 +46,8 @@ export class RotorEngine implements Engine {
   ): string {
     return this.translateCharacter(
       characterFromMessage,
-      this.rotorValue,
-      this.alphabet
+      this.rotorValue.value,
+      ALPHABET
     );
   }
 
@@ -45,8 +56,8 @@ export class RotorEngine implements Engine {
   ): string {
     return this.translateCharacter(
       characterFromMessage,
-      this.alphabet,
-      this.rotorValue
+      ALPHABET,
+      this.rotorValue.value
     );
   }
 
@@ -54,7 +65,7 @@ export class RotorEngine implements Engine {
     character: string,
     sourceString: string,
     destinationString: string
-  ) {
+  ): string {
     const indexInSourceString = this.findIndexOfCharacter(
       character,
       sourceString
@@ -63,7 +74,29 @@ export class RotorEngine implements Engine {
     return translatedCharacter;
   }
 
-  private findIndexOfCharacter(character: string, sourceString: string) {
+  private findIndexOfCharacter(
+    character: string,
+    sourceString: string
+  ): number {
     return sourceString.split("").findIndex((element) => element === character);
   }
+
+  static RotorEngineBuilder = class {
+    #rotor: RotorValue | undefined = undefined;
+
+    withValue(value: string): RotorEngine.RotorEngineBuilder {
+      this.#rotor = new RotorValue(value);
+      return this;
+    }
+
+    build(): RotorEngine {
+      return new RotorEngine(this);
+    }
+
+    get rotorValue(): RotorValue {
+      if (this.#rotor === undefined) throw new Error("No rotor value provided");
+
+      return this.#rotor;
+    }
+  };
 }

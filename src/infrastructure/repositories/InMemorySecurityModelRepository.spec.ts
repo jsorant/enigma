@@ -2,8 +2,8 @@ import { InMemorySecurityModelRepository } from "./InMemorySecurityModelReposito
 import chaiAsPromised from "chai-as-promised";
 import chai from "chai";
 import { SecurityModel } from "../../domain/entities/SecurityModel";
-import { CaesarEngine } from "../../domain/entities/engines/Caesar";
-import { RotorEngine } from "../../domain/entities/engines/Rotor";
+import { CaesarEngine } from "../../domain/entities/engines/caesar/CaesarEngine";
+import { RotorEngine } from "../../domain/entities/engines/rotor/RotorEngine";
 const { expect } = chai;
 chai.use(chaiAsPromised);
 

@@ -1,5 +1,5 @@
-import { CaesarEngine } from "../entities/engines/Caesar";
-import { RotorEngine } from "../entities/engines/Rotor";
+import { CaesarEngine } from "../entities/engines/caesar/CaesarEngine";
+import { RotorEngine } from "../entities/engines/rotor/RotorEngine";
 
 export function makeTestCases(): Array<any> {
   return [
