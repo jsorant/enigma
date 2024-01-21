@@ -1,5 +1,5 @@
 import { expect, test, describe } from "vitest";
-import { CaesarEngine } from "../../../src/domain/entities/engines/caesar/CaesarEngine";
+import { CaesarEngine } from "../../../../../src/domain/entities/engines/caesar/CaesarEngine";
 
 const testCasesWithShiftOnly = [
   { shift: 4, plainMessage: "A", encryptedMessage: "E" },
@@ -29,6 +29,26 @@ const testCasesWithShiftAndIncrement = [
 ];
 
 describe("CaesarEngine", () => {
+  describe("Build", () => {
+    test(`should not build with non integer shift`, () => {
+      expect(() => {
+        CaesarEngine.builder().withShift(1.2).build();
+      }).toThrowError("Shift must be an integer");
+    });
+
+    test(`should not build with non integer increment`, () => {
+      expect(() => {
+        CaesarEngine.builder().withIncrement(1.2).build();
+      }).toThrowError("Increment must be an integer");
+    });
+
+    test(`should not build with negative increment`, () => {
+      expect(() => {
+        CaesarEngine.builder().withIncrement(-2).build();
+      }).toThrowError("Increment must be positive");
+    });
+  });
+
   test(`should produce original message if encrypt with no shift nor increment`, () => {
     const caesar = CaesarEngine.builder().build();
 

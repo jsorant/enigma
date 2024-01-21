@@ -1,4 +1,6 @@
 import { Engine } from "../../Engine";
+import { Increment } from "./Increment";
+import { Shift } from "./Shift";
 
 const ASCII_CHAR_CODE_OF_A: number = "A".charCodeAt(0);
 const ASCII_CHAR_CODE_OF_Z: number = "Z".charCodeAt(0);
@@ -11,8 +13,8 @@ declare namespace CaesarEngine {
 export class CaesarEngine implements Engine {
   public static readonly ENGINE_NAME = "caesar";
 
-  private currentShift: number;
-  private readonly increment: number;
+  private currentShift: Shift;
+  private readonly increment: Increment;
 
   private constructor(builder: CaesarEngine.CaesarEngineBuilder) {
     this.currentShift = builder.shift;
@@ -74,15 +76,15 @@ export class CaesarEngine implements Engine {
   }
 
   private shift(asciiCharCode: number) {
-    return asciiCharCode + this.currentShift;
+    return asciiCharCode + this.currentShift.value;
   }
 
   private reverseShift(asciiCharCode: number) {
-    return asciiCharCode - this.currentShift;
+    return asciiCharCode - this.currentShift.value;
   }
 
   private updateCurrentShiftWithIncrement() {
-    this.currentShift = this.currentShift + this.increment;
+    this.currentShift = this.currentShift.addIncrement(this.increment);
   }
 
   private ensureIsInAZRange(asciiCharCode: number): number {
@@ -97,16 +99,16 @@ export class CaesarEngine implements Engine {
   }
 
   static CaesarEngineBuilder = class {
-    public shift: number = 0;
-    public increment: number = 0;
+    public shift: Shift = Shift.zero();
+    public increment: Increment = Increment.noIncrement();
 
-    withShift(shift: number): CaesarEngine.CaesarEngineBuilder {
-      this.shift = shift;
+    withShift(value: number): CaesarEngine.CaesarEngineBuilder {
+      this.shift = Shift.withValue(value);
       return this;
     }
 
-    withIncrement(increment: number): CaesarEngine.CaesarEngineBuilder {
-      this.increment = increment;
+    withIncrement(value: number): CaesarEngine.CaesarEngineBuilder {
+      this.increment = Increment.withValue(value);
       return this;
     }
 
