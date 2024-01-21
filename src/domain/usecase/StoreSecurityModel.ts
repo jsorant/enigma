@@ -1,6 +1,6 @@
 import { SecurityModelRepository } from "../ports/SecurityModelRepository";
 import { SecurityModel } from "../entities/SecurityModel";
-import { UseCase } from "./UseCase";
+import { UseCase } from "./shared/UseCase";
 
 declare namespace StoreSecurityModel {
   type StoreSecurityModelBuilder =

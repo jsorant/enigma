@@ -1,4 +1,4 @@
-import { UseCase } from "../domain/usecase/UseCase";
+import { UseCase } from "../domain/usecase/shared/UseCase";
 
 export interface ControllerResult {
   statusCode: number;

@@ -1,6 +1,6 @@
-import { SecurityModelRepository } from "../ports/SecurityModelRepository";
-import { SecurityModelNotFound } from "./errors/SecurityModelNotFound";
-import { SecurityModel } from "../entities/SecurityModel";
+import { SecurityModelRepository } from "../../ports/SecurityModelRepository";
+import { SecurityModelNotFound } from "../errors/SecurityModelNotFound";
+import { SecurityModel } from "../../entities/SecurityModel";
 
 export class SecurityModelBasedUseCase {
   private readonly repository: SecurityModelRepository;

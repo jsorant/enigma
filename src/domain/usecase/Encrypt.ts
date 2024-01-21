@@ -1,8 +1,6 @@
+import { UseCase } from "./shared/UseCase";
+import { SecurityModelBasedUseCase } from "./shared/SecurityModelBasedUseCase";
 import { SecurityModelRepository } from "../ports/SecurityModelRepository";
-import { SecurityModel } from "../entities/SecurityModel";
-import { Engine } from "../entities/engines/Engine";
-import { UseCase } from "./UseCase";
-import { SecurityModelBasedUseCase } from "./SecurityModelBasedUseCase";
 
 export interface EncryptResult {
   encryptedMessage: string;
