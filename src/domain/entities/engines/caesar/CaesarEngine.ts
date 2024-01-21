@@ -1,10 +1,7 @@
 import { Engine } from "../../Engine";
 import { Increment } from "./Increment";
+import { Letter } from "./Letter";
 import { Shift } from "./Shift";
-
-const ASCII_CHAR_CODE_OF_A: number = "A".charCodeAt(0);
-const ASCII_CHAR_CODE_OF_Z: number = "Z".charCodeAt(0);
-const ALPHABET_LENGTH = 26;
 
 declare namespace CaesarEngine {
   type CaesarEngineBuilder = typeof CaesarEngine.CaesarEngineBuilder.prototype;
@@ -26,76 +23,47 @@ export class CaesarEngine implements Engine {
   }
 
   encrypt(message: string): string {
-    return this.applyAsciiCharCodeConvertFunctionToEachCharacterOf(
-      message,
-      this.shiftAsciiCharCode
-    );
+    return this.transformEachLetterOf(message, this.shift);
   }
 
   decrypt(encryptedMessage: string): string {
-    return this.applyAsciiCharCodeConvertFunctionToEachCharacterOf(
-      encryptedMessage,
-      this.reverseShiftAsciiCharCode
-    );
+    return this.transformEachLetterOf(encryptedMessage, this.reverse);
   }
 
-  private applyAsciiCharCodeConvertFunctionToEachCharacterOf(
+  private transformEachLetterOf(
     aString: string,
-    asciiCharCodeConvertFunction: (asciiCharCode: number) => number
+    tranformLetterFunction: (letter: Letter) => Letter
   ): string {
     return aString
       .split("")
-      .map(this.convertFirstCharacterOfStringToAsciiCharCode)
-      .map(asciiCharCodeConvertFunction, this)
-      .map(this.convertAsciiCharCodeToString)
+      .map(this.toLetter)
+      .map(tranformLetterFunction, this)
+      .map(this.toString)
       .join("");
   }
 
-  private convertFirstCharacterOfStringToAsciiCharCode(
-    character: string
-  ): number {
-    return character.charCodeAt(0);
+  private toLetter(character: string): Letter {
+    return Letter.withValue(character);
   }
 
-  private convertAsciiCharCodeToString(asciiCharCode: number): string {
-    return String.fromCharCode(asciiCharCode);
+  private toString(letter: Letter): string {
+    return letter.value;
   }
 
-  private shiftAsciiCharCode(asciiCharCode: number): number {
-    const shifted = this.shift(asciiCharCode);
-    const shiftedInAZRange = this.ensureIsInAZRange(shifted);
+  private shift(letter: Letter): Letter {
+    const shifted = letter.shift(this.currentShift);
     this.updateCurrentShiftWithIncrement();
-    return shiftedInAZRange;
+    return shifted;
   }
 
-  private reverseShiftAsciiCharCode(asciiCharCode: number): number {
-    const shifted = this.reverseShift(asciiCharCode);
-    const shiftedInAZRange = this.ensureIsInAZRange(shifted);
+  private reverse(letter: Letter): Letter {
+    const shifted = letter.reverse(this.currentShift);
     this.updateCurrentShiftWithIncrement();
-    return shiftedInAZRange;
-  }
-
-  private shift(asciiCharCode: number) {
-    return asciiCharCode + this.currentShift.value;
-  }
-
-  private reverseShift(asciiCharCode: number) {
-    return asciiCharCode - this.currentShift.value;
+    return shifted;
   }
 
   private updateCurrentShiftWithIncrement() {
     this.currentShift = this.currentShift.addIncrement(this.increment);
-  }
-
-  private ensureIsInAZRange(asciiCharCode: number): number {
-    let result = asciiCharCode;
-    while (result > ASCII_CHAR_CODE_OF_Z) {
-      result -= ALPHABET_LENGTH;
-    }
-    while (result < ASCII_CHAR_CODE_OF_A) {
-      result += ALPHABET_LENGTH;
-    }
-    return result;
   }
 
   static CaesarEngineBuilder = class {
