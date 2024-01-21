@@ -1,3 +1,3 @@
-export interface UseCase<TInput, TResult> {
-  execute(input: TInput): Promise<TResult>;
+export interface UseCase<TResult> {
+  execute(): Promise<TResult>;
 }

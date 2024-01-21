@@ -1,6 +1,65 @@
-import { Engine } from "./Engine";
+import { Engine } from "./engines/Engine";
+import { CaesarEngine } from "./engines/caesar/CaesarEngine";
+import { RotorEngine } from "./engines/rotor/RotorEngine";
 
-export interface SecurityModel {
-  name: string;
-  engines: Array<Engine>;
+declare namespace SecurityModel {
+  type SecurityModelBuilder =
+    typeof SecurityModel.SecurityModelBuilder.prototype;
+}
+
+export class SecurityModel {
+  #name: string;
+  #engines: Array<Engine>;
+
+  private constructor(builder: SecurityModel.SecurityModelBuilder) {
+    this.#name = builder.name;
+    this.#engines = builder.engines;
+  }
+
+  static builder(): SecurityModel.SecurityModelBuilder {
+    return new SecurityModel.SecurityModelBuilder();
+  }
+
+  static SecurityModelBuilder = class {
+    #name: string = "";
+    #engines: Array<Engine> = [];
+
+    build(): SecurityModel {
+      return new SecurityModel(this);
+    }
+
+    withName(name: string): SecurityModel.SecurityModelBuilder {
+      this.#name = name;
+      return this;
+    }
+
+    withCaesar(
+      shift: number,
+      increment: number
+    ): SecurityModel.SecurityModelBuilder {
+      this.#engines.push(
+        CaesarEngine.builder().withShift(shift).withIncrement(increment).build()
+      );
+      return this;
+    }
+
+    withRotor(value: string): SecurityModel.SecurityModelBuilder {
+      this.#engines.push(RotorEngine.builder().withValue(value).build());
+      return this;
+    }
+
+    get name(): string {
+      if (this.#name === "")
+        throw new Error("[SecurityModel] A name must be provided");
+
+      return this.#name;
+    }
+
+    get engines(): Array<Engine> {
+      if (this.#engines.length === 0)
+        throw new Error("[SecurityModel] At least one engine must be provided");
+
+      return this.#engines;
+    }
+  };
 }
