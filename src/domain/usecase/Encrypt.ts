@@ -4,36 +4,89 @@ import { Engine } from "../entities/engines/Engine";
 import { UseCase } from "./UseCase";
 import { SecurityModelBasedUseCase } from "./SecurityModelBasedUseCase";
 
-export interface EncryptInput {
-  modelName: string;
-  message: string;
-}
-
 export interface EncryptResult {
   encryptedMessage: string;
 }
 
+declare namespace Encrypt {
+  type EncryptBuilder = typeof Encrypt.EncryptBuilder.prototype;
+}
+
 export class Encrypt
   extends SecurityModelBasedUseCase
-  implements UseCase<EncryptInput, EncryptResult>
+  implements UseCase<EncryptResult>
 {
-  constructor(repository: SecurityModelRepository) {
-    super(repository);
+  readonly #securityModelName: string;
+  readonly #messageToEncrypt: string;
+
+  private constructor(builder: Encrypt.EncryptBuilder) {
+    super(builder.repository);
+
+    this.#securityModelName = builder.securityModelName;
+    this.#messageToEncrypt = builder.messageToEncrypt;
   }
 
-  async execute(input: EncryptInput): Promise<EncryptResult> {
-    const model: SecurityModel = await this.retrieveSecurityModelOrThrow(
-      input.modelName
+  static builder(): Encrypt.EncryptBuilder {
+    return new Encrypt.EncryptBuilder();
+  }
+
+  async execute(): Promise<EncryptResult> {
+    const securityModel = await this.retrieveSecurityModelOrThrow(
+      this.#securityModelName
     );
-    const encryptedMessage: string = this.encrypt(input.message, model);
+    const encryptedMessage = securityModel.encrypt(this.#messageToEncrypt);
+    return this.formatResult(encryptedMessage);
+  }
+
+  private formatResult(encryptedMessage: string): EncryptResult {
     return { encryptedMessage };
   }
 
-  private encrypt(message: string, model: SecurityModel) {
-    let encryptedMessage: string = message;
-    model.engines.forEach((engine: Engine) => {
-      encryptedMessage = engine.encrypt(encryptedMessage);
-    });
-    return encryptedMessage;
-  }
+  static EncryptBuilder = class {
+    #repository: SecurityModelRepository | undefined = undefined;
+    #securityModelName: string = "";
+    #messageToEncrypt: string = "";
+
+    build(): Encrypt {
+      return new Encrypt(this);
+    }
+
+    withSecurityModelRepository(
+      repository: SecurityModelRepository
+    ): Encrypt.EncryptBuilder {
+      this.#repository = repository;
+      return this;
+    }
+
+    withSecurityModelName(name: string): Encrypt.EncryptBuilder {
+      this.#securityModelName = name;
+      return this;
+    }
+
+    withMessageToEncrypt(message: string): Encrypt.EncryptBuilder {
+      this.#messageToEncrypt = message;
+      return this;
+    }
+
+    get repository(): SecurityModelRepository {
+      if (this.#repository === undefined)
+        throw new Error("[Encrypt] A SecurityModelRepository must be provided");
+
+      return this.#repository;
+    }
+
+    get securityModelName(): string {
+      if (this.#securityModelName === "")
+        throw new Error("[Encrypt] A security model name must be provided");
+
+      return this.#securityModelName;
+    }
+
+    get messageToEncrypt(): string {
+      if (this.#messageToEncrypt === "")
+        throw new Error("[Encrypt] A message to encrypt must be provided");
+
+      return this.#messageToEncrypt;
+    }
+  };
 }

@@ -16,12 +16,33 @@ describe("SecurityModel", () => {
     });
 
     test(`should build`, async () => {
-      expect(() =>
-        SecurityModel.builder()
-          .withName("Any name")
-          .withRotor("BDFHJLCPRTXVZNYEIWGAKMUSQO")
-          .withCaesar(4, 1)
-      ).not.toThrow();
+      expect(() => buildSecurityModel()).not.toThrow();
     });
   });
+
+  test("should encrypt", () => {
+    const securityModel = buildSecurityModel();
+
+    expect(
+      securityModel.encrypt("EVERYONEISWELCOMEHEREEVERYONEISWELCOMEHERE")
+    ).toEqual("MKDWDLTEUPWZBXMTWUUROXHBZBYJDAMZRUWXJZAACQ");
+  });
+
+  test("should decrypt", () => {
+    const securityModel = buildSecurityModel();
+
+    expect(
+      securityModel.decrypt("MKDWDLTEUPWZBXMTWUUROXHBZBYJDAMZRUWXJZAACQ")
+    ).toEqual("EVERYONEISWELCOMEHEREEVERYONEISWELCOMEHERE");
+  });
+
+  function buildSecurityModel() {
+    return SecurityModel.builder()
+      .withName("enigma")
+      .withCaesar(9, 3)
+      .withRotor("BDFHTXVZNYEIWGAKMUSQOJLCPR")
+      .withRotor("AJDKSIRUXBGZNPYFVOELHWTMCQ")
+      .withRotor("TOWYHXUSPAIBRCJEKMFLGDQVZN")
+      .build();
+  }
 });

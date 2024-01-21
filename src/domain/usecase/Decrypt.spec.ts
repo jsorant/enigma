@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import chai from "chai";
 import { SecurityModelRepository } from "../ports/SecurityModelRepository";
 import { SecurityModelNotFound } from "./errors/SecurityModelNotFound";
-import { makeTestCases } from "./Fixtures.spec";
+import { makeTestCases } from "../../../tests/domain/usecase/Fixtures";
 import { Decrypt } from "./Decrypt";
 const { expect } = chai;
 chai.use(sinonChai);

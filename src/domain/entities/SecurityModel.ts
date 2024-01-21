@@ -8,16 +8,47 @@ declare namespace SecurityModel {
 }
 
 export class SecurityModel {
-  #name: string;
-  #engines: Array<Engine>;
+  public readonly name: string;
+  readonly #engines: Array<Engine>;
 
   private constructor(builder: SecurityModel.SecurityModelBuilder) {
-    this.#name = builder.name;
+    this.name = builder.name;
     this.#engines = builder.engines;
   }
 
   static builder(): SecurityModel.SecurityModelBuilder {
     return new SecurityModel.SecurityModelBuilder();
+  }
+
+  encrypt(message: string): string {
+    const encryptedMessage = this.useEveryEngineToEncrypt(message);
+    return encryptedMessage;
+  }
+
+  decrypt(encryptedMessage: string): string {
+    const decryptedMessage = this.useEveryEngineToDecrypt(encryptedMessage);
+    return decryptedMessage;
+  }
+
+  private useEveryEngineToEncrypt(message: string) {
+    let encryptedMessage: string = message;
+    this.#engines.forEach((engine: Engine) => {
+      encryptedMessage = engine.encrypt(encryptedMessage);
+    });
+    return encryptedMessage;
+  }
+
+  private useEveryEngineToDecrypt(encryptedMessage: string) {
+    let decryptedMessage: string = encryptedMessage;
+    const reversedEngines = this.reverseEnginesOrder();
+    reversedEngines.forEach((engine: Engine) => {
+      decryptedMessage = engine.decrypt(decryptedMessage);
+    });
+    return decryptedMessage;
+  }
+
+  private reverseEnginesOrder(): Array<Engine> {
+    return [...this.#engines].reverse();
   }
 
   static SecurityModelBuilder = class {
