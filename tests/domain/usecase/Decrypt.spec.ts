@@ -2,7 +2,7 @@ import { expect, test, describe } from "vitest";
 import { mock } from "vitest-mock-extended";
 import { SecurityModelRepository } from "../../../src/domain/ports/SecurityModelRepository";
 import { SecurityModelNotFound } from "../../../src/domain/usecase/errors/SecurityModelNotFound";
-import { makeTestCases } from "./Fixtures";
+import { makeTestCases } from "../../Fixtures";
 import { Decrypt } from "../../../src/domain/usecase/Decrypt";
 
 describe("Decrypt", () => {

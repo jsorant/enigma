@@ -3,7 +3,7 @@ import { mock } from "vitest-mock-extended";
 import { SecurityModelRepository } from "../../../src/domain/ports/SecurityModelRepository";
 import { Encrypt } from "../../../src/domain/usecase/Encrypt";
 import { SecurityModelNotFound } from "../../../src/domain/usecase/errors/SecurityModelNotFound";
-import { makeTestCases } from "./Fixtures";
+import { makeTestCases } from "../../Fixtures";
 
 describe("Encrypt", () => {
   describe("Build", () => {

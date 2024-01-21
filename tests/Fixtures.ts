@@ -1,4 +1,36 @@
-import { SecurityModel } from "../../../src/domain/entities/SecurityModel";
+import { SecurityModel } from "../src/domain/entities/SecurityModel";
+
+export function makeEnigmaFiveSecurityModel(): SecurityModel {
+  return SecurityModel.builder()
+    .withName("enigma-5")
+    .withCaesar(9, 1)
+    .withRotor("BDFHJLCPRTXVZNYEIWGAKMUSQO")
+    .withRotor("AJDKSIRUXBLHWTMCQGZNPYFVOE")
+    .withRotor("EKMFLGDQVZNTOWYHXUSPAIBRCJ")
+    .build();
+}
+
+export function makeEnigmaSixSecurityModel(): SecurityModel {
+  return SecurityModel.builder()
+    .withName("enigma-6")
+    .withCaesar(9, 3)
+    .withRotor("BDFHTXVZNYEIWGAKMUSQOJLCPR")
+    .withRotor("AJDKSIRUXBGZNPYFVOELHWTMCQ")
+    .withRotor("TOWYHXUSPAIBRCJEKMFLGDQVZN")
+    .build();
+}
+
+export function makeEnigmaSixSecurityModelWithName(
+  name: string
+): SecurityModel {
+  return SecurityModel.builder()
+    .withName(name)
+    .withCaesar(9, 3)
+    .withRotor("BDFHTXVZNYEIWGAKMUSQOJLCPR")
+    .withRotor("AJDKSIRUXBGZNPYFVOELHWTMCQ")
+    .withRotor("TOWYHXUSPAIBRCJEKMFLGDQVZN")
+    .build();
+}
 
 export function makeTestCases(): Array<any> {
   return [
@@ -58,24 +90,12 @@ export function makeTestCases(): Array<any> {
       encryptedMessage: "PQSACVVTOISXFXCIAMQEM",
     },
     {
-      securityModel: SecurityModel.builder()
-        .withName("enigma-5")
-        .withCaesar(9, 1)
-        .withRotor("BDFHJLCPRTXVZNYEIWGAKMUSQO")
-        .withRotor("AJDKSIRUXBLHWTMCQGZNPYFVOE")
-        .withRotor("EKMFLGDQVZNTOWYHXUSPAIBRCJ")
-        .build(),
+      securityModel: makeEnigmaFiveSecurityModel(),
       plainMessage: "EVERYONEISWELCOMEHEREEVERYONEISWELCOMEHERE",
       encryptedMessage: "PQSACVVTOISXFXCIAMQEMDZIXFJJSTQIENEFQXVZYV",
     },
     {
-      securityModel: SecurityModel.builder()
-        .withName("enigma-6")
-        .withCaesar(9, 3)
-        .withRotor("BDFHTXVZNYEIWGAKMUSQOJLCPR")
-        .withRotor("AJDKSIRUXBGZNPYFVOELHWTMCQ")
-        .withRotor("TOWYHXUSPAIBRCJEKMFLGDQVZN")
-        .build(),
+      securityModel: makeEnigmaSixSecurityModel(),
       plainMessage: "EVERYONEISWELCOMEHEREEVERYONEISWELCOMEHERE",
       encryptedMessage: "MKDWDLTEUPWZBXMTWUUROXHBZBYJDAMZRUWXJZAACQ",
     },
