@@ -1,43 +1,63 @@
+import { UseCase } from "./shared/UseCase";
 import { SecurityModelRepository } from "../ports/SecurityModelRepository";
 import { SecurityModel } from "../entities/SecurityModel";
-import { UseCase } from "./shared/UseCase";
 
 declare namespace StoreSecurityModel {
   type StoreSecurityModelBuilder =
     typeof StoreSecurityModel.StoreSecurityModelBuilder.prototype;
 }
-export class StoreSecurityModel implements UseCase<void> {
+
+export interface RotorInput {
+  name: "Rotor";
+  value: string;
+}
+
+export interface CaesarInput {
+  name: "Caesar";
+  shift: number;
+  increment: number;
+}
+
+export type EngineInput = RotorInput | CaesarInput;
+
+export interface StoreSecurityModelInput {
+  securityModelName: string;
+  engines: Array<EngineInput>;
+}
+
+export class StoreSecurityModel
+  implements UseCase<StoreSecurityModelInput, void>
+{
   readonly #repository: SecurityModelRepository;
-  readonly #securityModel: SecurityModel;
 
   private constructor(builder: StoreSecurityModel.StoreSecurityModelBuilder) {
     this.#repository = builder.repository;
-    this.#securityModel = builder.securityModel;
   }
 
   static builder(): StoreSecurityModel.StoreSecurityModelBuilder {
     return new StoreSecurityModel.StoreSecurityModelBuilder();
   }
 
-  async execute(): Promise<void> {
-    this.#repository.save(this.#securityModel);
+  async execute(input: StoreSecurityModelInput): Promise<void> {
+    let builder = SecurityModel.builder().withName(input.securityModelName);
+    for (let engine of input.engines) {
+      if (engine.name === "Caesar") {
+        builder = builder.withCaesar(engine.shift, engine.increment);
+      } else if (engine.name === "Rotor") {
+        builder = builder.withRotor(engine.value);
+      }
+    }
+    const securityModel = builder.build();
+    this.#repository.save(securityModel);
   }
 
   static StoreSecurityModelBuilder = class {
     #repository: SecurityModelRepository | undefined = undefined;
-    #securityModel: SecurityModel | undefined = undefined;
 
     withSecurityModelRepository(
       repository: SecurityModelRepository
     ): StoreSecurityModel.StoreSecurityModelBuilder {
       this.#repository = repository;
-      return this;
-    }
-
-    withSecurityModel(
-      securityModel: SecurityModel
-    ): StoreSecurityModel.StoreSecurityModelBuilder {
-      this.#securityModel = securityModel;
       return this;
     }
 
@@ -52,15 +72,6 @@ export class StoreSecurityModel implements UseCase<void> {
         );
 
       return this.#repository;
-    }
-
-    get securityModel(): SecurityModel {
-      if (this.#securityModel === undefined)
-        throw new Error(
-          "[StoreSecurityModel] A SecurityModel must be provided"
-        );
-
-      return this.#securityModel;
     }
   };
 }

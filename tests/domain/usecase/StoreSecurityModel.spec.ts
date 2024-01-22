@@ -1,57 +1,66 @@
-import { expect, test, describe } from "vitest";
-import { mock } from "vitest-mock-extended";
-import { StoreSecurityModel } from "../../../src/domain/usecase/StoreSecurityModel";
+import { expect, test, describe, beforeEach } from "vitest";
+import { mock, mockReset } from "vitest-mock-extended";
+import {
+  StoreSecurityModel,
+  StoreSecurityModelInput,
+} from "../../../src/domain/usecase/StoreSecurityModel";
 import { SecurityModelRepository } from "../../../src/domain/ports/SecurityModelRepository";
-import { SecurityModel } from "../../../src/domain/entities/SecurityModel";
 
 describe("StoreSecurityModel", () => {
-  describe("Build", () => {
-    const stubRepository = mock<SecurityModelRepository>();
+  const stubRepository = mock<SecurityModelRepository>();
 
+  beforeEach(() => {
+    mockReset(stubRepository);
+  });
+
+  describe("Build", () => {
     test(`should not build without a SecurityModelRepository`, async () => {
       expect(() => StoreSecurityModel.builder().build()).toThrowError(
         "[StoreSecurityModel] A SecurityModelRepository must be provided"
       );
     });
 
-    test(`should not build without a SecurityModel`, async () => {
-      expect(() =>
-        StoreSecurityModel.builder()
-          .withSecurityModelRepository(stubRepository)
-          .build()
-      ).toThrowError("[StoreSecurityModel] A SecurityModel must be provided");
-    });
-
     test(`should build`, async () => {
-      expect(() => buildStoreSecurityModel(stubRepository)).not.toThrow();
+      expect(() => buildStoreSecurityModel()).not.toThrow();
     });
   });
 
   test(`should store a security model`, async () => {
-    const stubRepository = mock<SecurityModelRepository>();
-    const usecase = buildStoreSecurityModel(stubRepository);
+    const usecase = buildStoreSecurityModel();
 
-    await usecase.execute();
+    await usecase.execute(input());
 
     expect(stubRepository.save).toBeCalledTimes(1);
   });
 
-  function buildStoreSecurityModel(
-    stubRepository: SecurityModelRepository
-  ): StoreSecurityModel {
+  function buildStoreSecurityModel(): StoreSecurityModel {
     return StoreSecurityModel.builder()
       .withSecurityModelRepository(stubRepository)
-      .withSecurityModel(buildSecurityModel())
       .build();
   }
 
-  function buildSecurityModel(): SecurityModel {
-    return SecurityModel.builder()
-      .withName("enigma-1")
-      .withCaesar(4, 1)
-      .withRotor("BDFHJLCPRTXVZNYEIWGAKMUSQO")
-      .withRotor("AJDKSIRUXBLHWTMCQGZNPYFVOE")
-      .withRotor("EKMFLGDQVZNTOWYHXUSPAIBRCJ")
-      .build();
+  function input(): StoreSecurityModelInput {
+    return {
+      securityModelName: "enigma-1",
+      engines: [
+        {
+          name: "Caesar",
+          shift: 4,
+          increment: 1,
+        },
+        {
+          name: "Rotor",
+          value: "BDFHJLCPRTXVZNYEIWGAKMUSQO",
+        },
+        {
+          name: "Rotor",
+          value: "AJDKSIRUXBLHWTMCQGZNPYFVOE",
+        },
+        {
+          name: "Rotor",
+          value: "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
+        },
+      ],
+    };
   }
 });

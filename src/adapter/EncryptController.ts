@@ -6,14 +6,18 @@ import {
 import { Controller } from "./Controller";
 
 export class EncryptController extends Controller<EncryptInput, EncryptResult> {
-  constructor(encrypt: Encrypt) {
+  private constructor(encrypt: Encrypt) {
     super(encrypt);
+  }
+
+  static buildWithUseCase(encrypt: Encrypt): EncryptController {
+    return new EncryptController(encrypt);
   }
 
   protected adaptInput(body: any): EncryptInput {
     return {
-      modelName: body.security_model_name,
-      message: body.message,
+      securityModelName: body.security_model_name,
+      messageToEncrypt: body.message,
     };
   }
 

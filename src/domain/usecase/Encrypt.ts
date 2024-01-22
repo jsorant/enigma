@@ -2,6 +2,11 @@ import { UseCase } from "./shared/UseCase";
 import { SecurityModelBasedUseCase } from "./shared/SecurityModelBasedUseCase";
 import { SecurityModelRepository } from "../ports/SecurityModelRepository";
 
+export interface EncryptInput {
+  securityModelName: string;
+  messageToEncrypt: string;
+}
+
 export interface EncryptResult {
   encryptedMessage: string;
 }
@@ -12,27 +17,21 @@ declare namespace Encrypt {
 
 export class Encrypt
   extends SecurityModelBasedUseCase
-  implements UseCase<EncryptResult>
+  implements UseCase<EncryptInput, EncryptResult>
 {
-  readonly #securityModelName: string;
-  readonly #messageToEncrypt: string;
-
   private constructor(builder: Encrypt.EncryptBuilder) {
     super(builder.repository);
-
-    this.#securityModelName = builder.securityModelName;
-    this.#messageToEncrypt = builder.messageToEncrypt;
   }
 
   static builder(): Encrypt.EncryptBuilder {
     return new Encrypt.EncryptBuilder();
   }
 
-  async execute(): Promise<EncryptResult> {
+  async execute(input: EncryptInput): Promise<EncryptResult> {
     const securityModel = await this.retrieveSecurityModelOrThrow(
-      this.#securityModelName
+      input.securityModelName
     );
-    const encryptedMessage = securityModel.encrypt(this.#messageToEncrypt);
+    const encryptedMessage = securityModel.encrypt(input.messageToEncrypt);
     return this.formatResult(encryptedMessage);
   }
 
@@ -42,8 +41,6 @@ export class Encrypt
 
   static EncryptBuilder = class {
     #repository: SecurityModelRepository | undefined = undefined;
-    #securityModelName: string = "";
-    #messageToEncrypt: string = "";
 
     build(): Encrypt {
       return new Encrypt(this);
@@ -56,35 +53,11 @@ export class Encrypt
       return this;
     }
 
-    withSecurityModelName(name: string): Encrypt.EncryptBuilder {
-      this.#securityModelName = name;
-      return this;
-    }
-
-    withMessageToEncrypt(message: string): Encrypt.EncryptBuilder {
-      this.#messageToEncrypt = message;
-      return this;
-    }
-
     get repository(): SecurityModelRepository {
       if (this.#repository === undefined)
         throw new Error("[Encrypt] A SecurityModelRepository must be provided");
 
       return this.#repository;
-    }
-
-    get securityModelName(): string {
-      if (this.#securityModelName === "")
-        throw new Error("[Encrypt] A security model name must be provided");
-
-      return this.#securityModelName;
-    }
-
-    get messageToEncrypt(): string {
-      if (this.#messageToEncrypt === "")
-        throw new Error("[Encrypt] A message to encrypt must be provided");
-
-      return this.#messageToEncrypt;
     }
   };
 }

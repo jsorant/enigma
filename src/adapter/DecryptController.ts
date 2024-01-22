@@ -6,14 +6,18 @@ import {
 import { Controller } from "./Controller";
 
 export class DecryptController extends Controller<DecryptInput, DecryptResult> {
-  constructor(decrypt: Decrypt) {
+  private constructor(decrypt: Decrypt) {
     super(decrypt);
+  }
+
+  static buildWithUseCase(decrypt: Decrypt): DecryptController {
+    return new DecryptController(decrypt);
   }
 
   protected adaptInput(body: any): DecryptInput {
     return {
-      modelName: body.security_model_name,
-      encryptedMessage: body.encrypted_message,
+      securityModelName: body.security_model_name,
+      messageToDecrypt: body.encrypted_message,
     };
   }
 
