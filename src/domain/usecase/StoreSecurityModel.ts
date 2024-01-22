@@ -43,7 +43,7 @@ export class StoreSecurityModel
     for (let engine of input.engines) {
       if (engine.name === "Caesar") {
         builder = builder.withCaesar(engine.shift, engine.increment);
-      } else if (engine.name === "Rotor") {
+      } else {
         builder = builder.withRotor(engine.value);
       }
     }

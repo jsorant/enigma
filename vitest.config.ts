@@ -5,6 +5,7 @@ export default defineConfig({
   test: {
     exclude: [...configDefaults.exclude, "src/**"],
     coverage: {
+      provider: "istanbul",
       exclude: [...configDefaults.exclude, "features/", "cucumber.js"],
       enabled: true,
       reporter: ["text", "html"],
