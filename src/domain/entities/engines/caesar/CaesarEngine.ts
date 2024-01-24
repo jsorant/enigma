@@ -11,11 +11,13 @@ export class CaesarEngine implements Engine {
   public static readonly ENGINE_NAME = "caesar";
 
   private currentShift: Shift;
-  private readonly increment: Increment;
+  readonly #originalShift: Shift;
+  readonly #increment: Increment;
 
   private constructor(builder: CaesarEngine.CaesarEngineBuilder) {
     this.currentShift = builder.shift;
-    this.increment = builder.increment;
+    this.#originalShift = builder.shift;
+    this.#increment = builder.increment;
   }
 
   static builder(): CaesarEngine.CaesarEngineBuilder {
@@ -23,11 +25,17 @@ export class CaesarEngine implements Engine {
   }
 
   encrypt(message: string): string {
+    this.resetCurrentShift();
     return this.transformEachLetterOf(message, this.shift);
   }
 
   decrypt(encryptedMessage: string): string {
+    this.resetCurrentShift();
     return this.transformEachLetterOf(encryptedMessage, this.reverse);
+  }
+
+  private resetCurrentShift() {
+    this.currentShift = this.#originalShift;
   }
 
   private transformEachLetterOf(
@@ -63,7 +71,7 @@ export class CaesarEngine implements Engine {
   }
 
   private updateCurrentShiftWithIncrement() {
-    this.currentShift = this.currentShift.addIncrement(this.increment);
+    this.currentShift = this.currentShift.addIncrement(this.#increment);
   }
 
   static CaesarEngineBuilder = class {

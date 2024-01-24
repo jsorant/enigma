@@ -2,11 +2,10 @@
   "name": "encryptor",
   "version": "1.0.0",
   "license": "proprietary",
-  "type": "module",
   "devDependencies": {
     "@cucumber/cucumber": "^10.3.1",
     "@types/body-parser": "^1.19.2",
-    "@types/clone": "^2.1.1",
+    "@types/chai": "^4.3.11",
     "@types/express": "^4.17.17",
     "@types/node": "^20.11.5",
     "@types/supertest": "^6.0.2",
@@ -22,7 +21,6 @@
   },
   "dependencies": {
     "body-parser": "^1.20.2",
-    "clone": "^2.1.2",
     "express": "^4.18.2"
   },
   "scripts": {
@@ -30,6 +28,7 @@
     "test:watch": "vitest",
     "test:coverage": "nyc npm run test",
     "test:bdd": "cucumber-js",
+    "test:bdd:only": "npm run test:bdd -- --tags \"@only\"",
     "test:bdd:bb": "npm run test:bdd -- --profile blackbox",
     "test:bdd:bbdc": "npm run test:bdd -- --profile blackbox_docker_compose",
     "test:bdd:coverage": "nyc npm run test:bdd",

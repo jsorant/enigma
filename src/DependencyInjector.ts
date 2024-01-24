@@ -24,16 +24,19 @@ export class DependencyInjector {
 
   constructor() {
     this.securityModelRepository = new InMemorySecurityModelRepository();
-    this.storeSecurityModel = new StoreSecurityModel(
-      this.securityModelRepository
-    );
-    this.encrypt = new Encrypt(this.securityModelRepository);
-    this.decrypt = new Decrypt(this.securityModelRepository);
-    this.storeSecurityModelController = new StoreSecurityModelController(
-      this.storeSecurityModel
-    );
-    this.encryptController = new EncryptController(this.encrypt);
-    this.decryptController = new DecryptController(this.decrypt);
+    this.storeSecurityModel = StoreSecurityModel.builder()
+      .withSecurityModelRepository(this.securityModelRepository)
+      .build();
+    this.encrypt = Encrypt.builder()
+      .withSecurityModelRepository(this.securityModelRepository)
+      .build();
+    this.decrypt = Decrypt.builder()
+      .withSecurityModelRepository(this.securityModelRepository)
+      .build();
+    this.storeSecurityModelController =
+      StoreSecurityModelController.buildWithUseCase(this.storeSecurityModel);
+    this.encryptController = EncryptController.buildWithUseCase(this.encrypt);
+    this.decryptController = DecryptController.buildWithUseCase(this.decrypt);
     this.apiRouter = new ApiRouter(
       this.storeSecurityModelController,
       this.encryptController,

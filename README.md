@@ -70,3 +70,9 @@ npm run dev
 ## API calls
 
 Use VSCode `REST Client` extension to execute requests defined in `api-calls` folder.
+
+## TODO
+
+- Move to full ESM (Cucumber relies on CommonJS for now)
+- Remove Chai and use Vitest assertions on BDD tests
+- Propertly clone objects

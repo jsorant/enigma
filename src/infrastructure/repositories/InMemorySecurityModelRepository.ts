@@ -1,6 +1,5 @@
 import { SecurityModelRepository } from "../../domain/ports/SecurityModelRepository";
 import { SecurityModel } from "../../domain/entities/SecurityModel";
-import clone from "clone";
 
 export class InMemorySecurityModelRepository
   implements SecurityModelRepository
@@ -12,6 +11,7 @@ export class InMemorySecurityModelRepository
   }
 
   async getByName(name: string): Promise<SecurityModel | undefined> {
-    return clone(this.map.get(name));
+    return this.map.get(name);
+    //TODO clone
   }
 }

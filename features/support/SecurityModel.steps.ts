@@ -64,7 +64,7 @@ function addCaesarEngineToSecurityModel(
 function addRotorEngineToSecurityModel(world: any, rotor: string) {
   world.securityModel.engines.push({
     name: "rotor",
-    rotor,
+    value: rotor,
   });
 }
 

@@ -57,6 +57,16 @@ describe("CaesarEngine", () => {
     expect(encryptedMessage).to.equal("ANYMESSAGE");
   });
 
+  test(`should produce the same output when encrypting twice with shift and increment`, () => {
+    const caesar = CaesarEngine.builder().withShift(3).withIncrement(1).build();
+    const messageToEncrypt = "AAAZZZ";
+
+    const firstEncryptedMessage = caesar.encrypt(messageToEncrypt);
+    const secondEncryptedMessage = caesar.encrypt(messageToEncrypt);
+
+    expect(firstEncryptedMessage).to.equal(secondEncryptedMessage);
+  });
+
   testCases.forEach((testCase) => {
     test(`should return ${testCase.encryptedMessage} when encrypting with shift = ${testCase.shift}, increment = ${testCase.increment} and message = ${testCase.plainMessage}`, () => {
       const caesar = CaesarEngine.builder()

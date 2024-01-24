@@ -39,7 +39,7 @@ export class SecurityModel {
   }
 
   private useEveryEngineToDecrypt(encryptedMessage: string) {
-    let decryptedMessage: string = encryptedMessage;
+    let decryptedMessage = encryptedMessage;
     const reversedEngines = this.reverseEnginesOrder();
     reversedEngines.forEach((engine: Engine) => {
       decryptedMessage = engine.decrypt(decryptedMessage);
@@ -48,7 +48,7 @@ export class SecurityModel {
   }
 
   private reverseEnginesOrder(): Array<Engine> {
-    return [...this.#engines].reverse();
+    return this.#engines.slice().reverse();
   }
 
   static SecurityModelBuilder = class {

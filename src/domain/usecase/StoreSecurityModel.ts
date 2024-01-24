@@ -48,7 +48,7 @@ export class StoreSecurityModel
       }
     }
     const securityModel = builder.build();
-    this.#repository.save(securityModel);
+    await this.#repository.save(securityModel);
   }
 
   static StoreSecurityModelBuilder = class {
