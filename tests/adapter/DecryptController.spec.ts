@@ -20,6 +20,10 @@ describe("DecryptController", () => {
 
   //TODO add body validation and AJV
 
+  test(`should have route '/decrypt'`, async () => {
+    expect(sut.route()).toBe("/decrypt");
+  });
+
   test(`should return 200 and a body containing the encrypted message on valid call`, async () => {
     stubRepository.getByName.mockResolvedValueOnce(
       makeEnigmaSixSecurityModel()

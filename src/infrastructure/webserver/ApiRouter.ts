@@ -8,9 +8,9 @@ export class ApiRouter {
     this.expressRouter = express.Router();
   }
 
-  registerPostRoute(route: string, controller: Controller<any, any>) {
+  registerPostRoute(controller: Controller<any, any>) {
     this.expressRouter.post(
-      route,
+      controller.route(),
       async function (req: Request, res: Response, next: NextFunction) {
         try {
           const result = await controller.execute(req.body);

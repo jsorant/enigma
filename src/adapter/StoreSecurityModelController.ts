@@ -7,6 +7,8 @@ import {
 } from "../domain/usecase/StoreSecurityModel";
 import { Controller } from "./Controller";
 
+const ROUTE: string = "/security-model";
+
 const CAESAR_ENGINE_NAME_FROM_BODY = "caesar";
 const ROTOR_ENGINE_NAME_FROM_BODY = "rotor";
 
@@ -15,7 +17,7 @@ export class StoreSecurityModelController extends Controller<
   void
 > {
   private constructor(storeSecurityModel: StoreSecurityModel) {
-    super(storeSecurityModel);
+    super(ROUTE, storeSecurityModel);
   }
 
   static buildWithUseCase(storeSecurityModel: StoreSecurityModel) {

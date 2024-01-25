@@ -44,12 +44,9 @@ export class ApplicationBuilder {
   }
 
   private registerRoutes() {
-    this.server.registerPostRoute(
-      "/security-model",
-      this.storeSecurityModelController
-    );
-    this.server.registerPostRoute("/encrypt", this.encryptController);
-    this.server.registerPostRoute("/decrypt", this.decryptController);
+    this.server.registerPostRoute(this.storeSecurityModelController);
+    this.server.registerPostRoute(this.encryptController);
+    this.server.registerPostRoute(this.decryptController);
   }
 
   private buildControllers() {

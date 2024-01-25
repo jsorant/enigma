@@ -5,9 +5,11 @@ import {
 } from "../domain/usecase/Encrypt";
 import { Controller } from "./Controller";
 
+const ROUTE: string = "/encrypt";
+
 export class EncryptController extends Controller<EncryptInput, EncryptResult> {
   private constructor(encrypt: Encrypt) {
-    super(encrypt);
+    super(ROUTE, encrypt);
   }
 
   static buildWithUseCase(encrypt: Encrypt): EncryptController {

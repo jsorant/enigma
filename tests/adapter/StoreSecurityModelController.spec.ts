@@ -44,6 +44,10 @@ describe("StoreSecurityModelController", () => {
 
   //TODO add more validation and AJV
 
+  test(`should have route '/security-model'`, async () => {
+    expect(sut.route()).toBe("/security-model");
+  });
+
   test(`should return 200 and no body on valid call`, async () => {
     const body = validBody();
 

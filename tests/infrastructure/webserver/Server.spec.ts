@@ -44,9 +44,10 @@ describe("Server", () => {
       },
     };
 
+    stubController.route.mockReturnValueOnce("/any_route");
     stubController.execute.mockResolvedValueOnce(controllerResponseBody);
 
-    server.registerPostRoute("/any_route", stubController);
+    server.registerPostRoute(stubController);
 
     const body = {
       name: "John Doe",
@@ -71,9 +72,10 @@ describe("Server", () => {
     const server = buildServer();
     const wrappedApplication = supertest(server.expressApplication);
 
+    stubController.route.mockReturnValueOnce("/any_route");
     stubController.execute.mockRejectedValueOnce(new Error("Any error"));
 
-    server.registerPostRoute("/any_route", stubController);
+    server.registerPostRoute(stubController);
 
     const body = {
       name: "John Doe",

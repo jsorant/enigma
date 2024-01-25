@@ -25,8 +25,8 @@ export class Server {
     return new Server.ServerBuilder();
   }
 
-  registerPostRoute(route: string, controller: Controller<any, any>) {
-    this.#apiRouter.registerPostRoute(route, controller);
+  registerPostRoute(controller: Controller<any, any>) {
+    this.#apiRouter.registerPostRoute(controller);
   }
 
   private setupExpressApplication() {

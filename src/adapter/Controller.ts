@@ -6,15 +6,21 @@ export interface ControllerResult {
 }
 
 export abstract class Controller<TUseCaseInput, TUseCaseResult> {
-  private readonly usecase: UseCase<TUseCaseInput, TUseCaseResult>;
+  readonly #usecase: UseCase<TUseCaseInput, TUseCaseResult>;
+  readonly #route: string;
 
-  constructor(usecase: UseCase<TUseCaseInput, TUseCaseResult>) {
-    this.usecase = usecase;
+  constructor(route: string, usecase: UseCase<TUseCaseInput, TUseCaseResult>) {
+    this.#usecase = usecase;
+    this.#route = route;
+  }
+
+  public route(): string {
+    return this.#route;
   }
 
   async execute(body: any): Promise<ControllerResult> {
     const input = this.adaptInput(body);
-    const usecaseResult = await this.usecase.execute(input);
+    const usecaseResult = await this.#usecase.execute(input);
     const result = this.adaptResult(usecaseResult);
     return result;
   }
