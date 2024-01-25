@@ -76,3 +76,5 @@ Use VSCode `REST Client` extension to execute requests defined in `api-calls` fo
 - Move to full ESM (Cucumber relies on CommonJS for now)
 - Remove Chai and use Vitest assertions on BDD tests
 - Propertly clone objects
+- Build
+- Run BDD tests using Docker on a built image
