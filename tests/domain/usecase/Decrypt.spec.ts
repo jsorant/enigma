@@ -13,15 +13,9 @@ describe("Decrypt", () => {
   });
 
   describe("Build", () => {
-    test("should not build without a security model repository", () => {
-      expect(() => Decrypt.builder().build()).toThrowError(
-        "[Decrypt] A SecurityModelRepository must be provided"
-      );
-    });
-
     test("should build", () => {
       expect(() =>
-        Decrypt.builder().withSecurityModelRepository(stubRepository).build()
+        Decrypt.buildWithSecurityModelRepository(stubRepository)
       ).not.toThrow();
     });
   });
@@ -30,9 +24,7 @@ describe("Decrypt", () => {
     let decrypt: Decrypt;
 
     beforeEach(() => {
-      decrypt = Decrypt.builder()
-        .withSecurityModelRepository(stubRepository)
-        .build();
+      decrypt = Decrypt.buildWithSecurityModelRepository(stubRepository);
     });
 
     test(`should throw if using an non existing security model`, async () => {

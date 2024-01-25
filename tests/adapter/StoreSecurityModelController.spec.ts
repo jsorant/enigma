@@ -12,9 +12,9 @@ describe("StoreSecurityModelController", () => {
 
   beforeEach(() => {
     mockReset(stubRepository);
-    useCase = StoreSecurityModel.builder()
-      .withSecurityModelRepository(stubRepository)
-      .build();
+    useCase =
+      StoreSecurityModel.buildWithSecurityModelRepository(stubRepository);
+
     sut = StoreSecurityModelController.buildWithUseCase(useCase);
   });
 

@@ -11,20 +11,18 @@ export interface DecryptResult {
   decryptedMessage: string;
 }
 
-declare namespace Decrypt {
-  type DecryptBuilder = typeof Decrypt.DecryptBuilder.prototype;
-}
-
 export class Decrypt
   extends SecurityModelBasedUseCase
   implements UseCase<DecryptInput, DecryptResult>
 {
-  private constructor(builder: Decrypt.DecryptBuilder) {
-    super(builder.repository);
+  private constructor(repository: SecurityModelRepository) {
+    super(repository);
   }
 
-  static builder(): Decrypt.DecryptBuilder {
-    return new Decrypt.DecryptBuilder();
+  static buildWithSecurityModelRepository(
+    repository: SecurityModelRepository
+  ): Decrypt {
+    return new Decrypt(repository);
   }
 
   async execute(input: DecryptInput): Promise<DecryptResult> {
@@ -38,26 +36,4 @@ export class Decrypt
   private formatResult(decryptedMessage: string): DecryptResult {
     return { decryptedMessage };
   }
-
-  static DecryptBuilder = class {
-    #repository: SecurityModelRepository | undefined = undefined;
-
-    withSecurityModelRepository(
-      repository: SecurityModelRepository
-    ): Decrypt.DecryptBuilder {
-      this.#repository = repository;
-      return this;
-    }
-
-    build(): Decrypt {
-      return new Decrypt(this);
-    }
-
-    get repository(): SecurityModelRepository {
-      if (this.#repository === undefined)
-        throw new Error("[Decrypt] A SecurityModelRepository must be provided");
-
-      return this.#repository;
-    }
-  };
 }

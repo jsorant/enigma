@@ -14,12 +14,6 @@ describe("StoreSecurityModel", () => {
   });
 
   describe("Build", () => {
-    test(`should not build without a SecurityModelRepository`, async () => {
-      expect(() => StoreSecurityModel.builder().build()).toThrowError(
-        "[StoreSecurityModel] A SecurityModelRepository must be provided"
-      );
-    });
-
     test(`should build`, async () => {
       expect(() => buildStoreSecurityModel()).not.toThrow();
     });
@@ -34,9 +28,7 @@ describe("StoreSecurityModel", () => {
   });
 
   function buildStoreSecurityModel(): StoreSecurityModel {
-    return StoreSecurityModel.builder()
-      .withSecurityModelRepository(stubRepository)
-      .build();
+    return StoreSecurityModel.buildWithSecurityModelRepository(stubRepository);
   }
 
   function input(): StoreSecurityModelInput {

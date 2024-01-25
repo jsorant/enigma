@@ -13,9 +13,8 @@ describe("DecryptController", () => {
 
   beforeEach(() => {
     mockReset(stubRepository);
-    useCase = Decrypt.builder()
-      .withSecurityModelRepository(stubRepository)
-      .build();
+    useCase = Decrypt.buildWithSecurityModelRepository(stubRepository);
+
     sut = DecryptController.buildWithUseCase(useCase);
   });
 
