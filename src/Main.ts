@@ -1,5 +1,8 @@
-import { DependencyInjector } from "./DependencyInjector";
+import { ApplicationBuilder } from "./ApplicationBuilder";
 
-const di = new DependencyInjector();
+const PORT = 3000;
+const di = new ApplicationBuilder();
 const server = di.server;
-server.start(3000);
+server.expressApplication.listen(PORT, () => {
+  return console.log(`server is listening on ${PORT}`);
+});

@@ -10,7 +10,7 @@ import { EncryptController } from "./adapter/EncryptController";
 import { StoreSecurityModelController } from "./adapter/StoreSecurityModelController";
 import { ErrorHandler } from "./infrastructure/webserver/ErrorHandler";
 
-export class DependencyInjector {
+export class ApplicationBuilder {
   private readonly securityModelRepository: SecurityModelRepository;
   private readonly storeSecurityModel: StoreSecurityModel;
   private readonly encrypt: Encrypt;
@@ -37,12 +37,19 @@ export class DependencyInjector {
       StoreSecurityModelController.buildWithUseCase(this.storeSecurityModel);
     this.encryptController = EncryptController.buildWithUseCase(this.encrypt);
     this.decryptController = DecryptController.buildWithUseCase(this.decrypt);
-    this.apiRouter = new ApiRouter(
-      this.storeSecurityModelController,
-      this.encryptController,
-      this.decryptController
-    );
+    this.apiRouter = new ApiRouter();
     this.errorHandler = new ErrorHandler();
-    this.server = new Server(this.apiRouter, this.errorHandler);
+
+    this.server = Server.builder()
+      .withRouter(this.apiRouter)
+      .withErrorHandler(this.errorHandler)
+      .build();
+
+    this.server.registerPostRoute(
+      "/security-model",
+      this.storeSecurityModelController
+    );
+    this.server.registerPostRoute("/encrypt", this.encryptController);
+    this.server.registerPostRoute("/decrypt", this.decryptController);
   }
 }

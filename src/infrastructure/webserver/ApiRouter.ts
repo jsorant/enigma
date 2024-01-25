@@ -1,42 +1,15 @@
 import express, { NextFunction, Request, Response, Router } from "express";
-import { DecryptController } from "../../adapter/DecryptController";
-import { EncryptController } from "../../adapter/EncryptController";
-import { StoreSecurityModelController } from "../../adapter/StoreSecurityModelController";
 import { Controller } from "../../adapter/Controller";
 
 export class ApiRouter {
-  private readonly storeSecurityModelController: StoreSecurityModelController;
-  private readonly encryptController: EncryptController;
-  private readonly decryptController: DecryptController;
-  private readonly router: Router;
+  public readonly expressRouter: Router;
 
-  constructor(
-    storeSecurityModelController: StoreSecurityModelController,
-    encryptController: EncryptController,
-    decryptController: DecryptController
-  ) {
-    this.router = express.Router();
-    this.storeSecurityModelController = storeSecurityModelController;
-    this.encryptController = encryptController;
-    this.decryptController = decryptController;
-    this.registerApiRoutes();
+  constructor() {
+    this.expressRouter = express.Router();
   }
 
-  getExpressRouter(): Router {
-    return this.router;
-  }
-
-  private registerApiRoutes(): void {
-    this.registerPostRoute(
-      "/security-model",
-      this.storeSecurityModelController
-    );
-    this.registerPostRoute("/encrypt", this.encryptController);
-    this.registerPostRoute("/decrypt", this.decryptController);
-  }
-
-  private registerPostRoute(route: string, controller: Controller<any, any>) {
-    this.router.post(
+  registerPostRoute(route: string, controller: Controller<any, any>) {
+    this.expressRouter.post(
       route,
       async function (req: Request, res: Response, next: NextFunction) {
         try {

@@ -1,5 +1,5 @@
 import { After, Before } from "@cucumber/cucumber";
-import { DependencyInjector } from "../../src/DependencyInjector";
+import { ApplicationBuilder } from "../../src/ApplicationBuilder";
 import { SuperTestApplicationWrapper } from "./ApplicationWrapper/SuperTestApplicationWrapper";
 import { TestContainersApplicationWrapper } from "./ApplicationWrapper/TestContainersApplicationWrapper";
 import { TestContainersGenericApplicationWrapper } from "./ApplicationWrapper/TestContainersGenericApplicationWrapper";
@@ -20,7 +20,7 @@ After({ timeout: TEST_SETUP_AND_TEARDOWN_TIMEOUT }, async function () {
 });
 
 function setupDependencyInjectonContainer(world: any) {
-  world.di = new DependencyInjector();
+  world.di = new ApplicationBuilder();
 }
 
 function setupApplication(world: any) {
